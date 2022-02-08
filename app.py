@@ -1,4 +1,4 @@
-from flask import Flask,render_template,request,redirect
+from flask import Flask,render_template,request,redirect,jsonify
  
 app = Flask(__name__)
  
@@ -10,8 +10,10 @@ def index():
 @app.route('/calculate', methods = ['POST', 'GET'])
 def calculate():
 	if request.method == 'POST':
-		return redirect("/")
+		return jsonify({"result" : "POST request works!"})
 	elif request.method == 'GET':
-		return redirect("/")
+		data = dict(request.args)
+		
+		return jsonify(data)
 
 app.run() # host='localhost', port=5000

@@ -1,0 +1,65 @@
+<form id="form">
+	<!-- Sex -->
+	<fieldset class="row mb-3">
+		<legend class="col-form-label col-sm-2 pt-0">Sex</legend>
+		<div class="col-sm-10">
+			<div class="form-check">
+				<input class="form-check-input" type="radio" name="sex" id="sex1" value="male">
+				<label class="form-check-label" for="sex1">Male</label>
+			</div>
+			<div class="form-check">
+				<input class="form-check-input" type="radio" name="sex" id="sex2" value="female">
+				<label class="form-check-label" for="sex2">Female</label>
+			</div>
+		</div>
+	</fieldset>
+
+	<!-- Age -->
+	<div class="row mb-3">
+		<label class="col-sm-2 col-form-label">Age (years, int)</label>
+		<div class="col-sm-10">
+			<input class="form-control" name="age">
+		</div>
+	</div>
+
+	<!-- Smoker -->
+	<fieldset class="row mb-3">
+		<legend class="col-form-label col-sm-2 pt-0">Smok?</legend>
+		<div class="col-sm-10">
+			<div class="form-check">
+				<input class="form-check-input" type="radio" name="smok" id="smok1" value="yes">
+				<label class="form-check-label" for="smok1">Oui</label>
+			</div>
+			<div class="form-check">
+				<input class="form-check-input" type="radio" name="smok" id="smok2" value="no">
+				<label class="form-check-label" for="smok2">Non</label>
+			</div>
+		</div>
+	</fieldset>
+
+	<!-- Systolic -->
+	<div class="row mb-3">
+		<label class="col-sm-2 col-form-label">Systolic (mmHg, int)</label>
+		<div class="col-sm-10">
+			<input class="form-control" name="systolic">
+		</div>
+	</div>
+
+	<!-- Total Cholesterol -->
+	<div class="row mb-3">
+		<label class="col-sm-2 col-form-label">Total Cholesterol (mg/dL, int)</label>
+		<div class="col-sm-10">
+			<input class="form-control" name="cholesterol">
+		</div>
+	</div>
+
+	<!-- Total Cholesterol -->
+	<div class="row mb-3">
+		<label class="col-sm-2 col-form-label">HDL Cholesterol (mg/dL, int)</label>
+		<div class="col-sm-10">
+			<input class="form-control" name="hdl">
+		</div>
+	</div>
+
+	<button type="submit" class="btn btn-primary">Submit</button>
+</form>

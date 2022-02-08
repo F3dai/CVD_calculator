@@ -1,198 +1,207 @@
 
 class calculate:
 
-	def __init__(self, age:int, ldl:int, cholesterol:int, hdl:int, diastolic:int, systolic:int, diabetes:bool, smoker:bool):
+	def __init__(self, sex:str, age:int, smoker:bool, systolic:int, cholesterol:int, hdl:int):
 
+		self.sex = sex
 		self.age = age
-		self.ldl = ldl
+		self.smoker = smoker
+		self.systolic = systolic
 		self.cholesterol = cholesterol
 		self.hdl = hdl
-		self.diastolic = diastolic
-		self.systolic = systolic
-		self.diabetes = diabetes
-		self.smoker = smoker
 
-		self.risk = False
-		self.comparative = False
+		self.age_index = False
+
 
 	def age_risk(self):
 
+		index = False
+
+		# Points for each sex, index
+		sex_points = {
+			"male": [-9, -4, 0, 3, 6, 8, 10, 11, 12, 13],
+			"female" : [-7, -3, 0, 3, 6, 8, 10, 12, 14, 16],
+		}
+
+		# Return index
 		if 30 <= self.age <= 34:
-			self.comparative = 3
-			return -1
-		elif 35 <= self.age <= 39:
-			self.comparative = 5
-			return 0
-		elif 40 <= self.age <= 44:
-			self.comparative = 7
-			return 1
-		elif 45 <= self.age <= 49:
-			self.comparative = 11
-			return 2
-		elif 50 <= self.age <= 54:
-			self.comparative = 14
-			return 3
-		elif 55 <= self.age <= 59:
-			self.comparative = 16
-			return 4
-		elif 60 <= self.age <= 64:
-			self.comparative = 21
-			return 5
-		elif 65 <= self.age <= 69:
-			self.comparative = 25
-			return 6
-		elif 70 <= self.age <= 74:
-			self.comparative = 30
-			return 7
-
-	def ldl_risk(self):
-
-		if self.ldl < 100:
-			return -3
-		elif 100 <= self.ldl <= 129:
-			return 0 
-		elif 130 <= self.ldl <= 159:
-			return 0 
-		elif 160 <= self.ldl < 190:
-			return 1
+			self.age_index =  0
+		elif self.age <= 39:
+			self.age_index =  1
+		elif self.age <= 44:
+			self.age_index =  2
+		elif self.age <= 49:
+			self.age_index =  3
+		elif self.age <= 54:
+			self.age_index =  4
+		elif self.age <= 59:
+			self.age_index =  5
+		elif self.age <= 64:
+			self.age_index =  6
+		elif self.age <= 69:
+			self.age_index =  7
+		elif self.age <= 74:
+			self.age_index =  8
 		else:
-			return 2
+			return {"error" : f"Age out of range. Must be between 30 and 74"}
+
+		return sex_points[self.sex][index]
+
+
+	# def ldl_risk(self):
+	# 	if self.ldl < 100:
+	# 		return -3
+	# 	elif 100 <= self.ldl <= 129:
+	# 		return 0 
+	# 	elif 130 <= self.ldl <= 159:
+	# 		return 0 
+	# 	elif 160 <= self.ldl < 190:
+	# 		return 1
+	# 	else:
+	# 		return 2
+
 
 	def cholesterol_risk(self):
 
+		# Index for age and sex
+		cholesterol_points = { 
+			"male" : [
+				# Age index
+				[0, 4, 7, 9, 11],
+				[0, 4, 7, 9, 11],
+				[0, 3, 5, 6, 8],
+				[0, 3, 5, 6, 8],
+				[0, 2, 3, 4, 5],
+				[0, 2, 3, 4, 5],
+				[0, 1, 1, 2, 3],
+				[0, 1, 1, 2, 3],
+				[0, 0, 0, 1, 1],
+				[0, 0, 0, 1, 1]
+			],
+			"female" : [
+				# Age index
+				[0, 4, 8, 11, 13],
+				[0, 4, 8, 11, 13],
+				[0, 3, 6, 8, 10],
+				[0, 3, 6, 8, 10],
+				[0, 2, 4, 5, 7],
+				[0, 2, 4, 5, 7],
+				[0, 1, 2, 3, 4],
+				[0, 1, 2, 3, 4],
+				[0, 1, 1, 2, 2],
+				[0, 1, 1, 2, 2]
+			]
+		}
+
 		if self.cholesterol < 160:
-			return -3
+			index = 0
 		elif 160 <= self.cholesterol <= 199:
-			return 0 
+			index = 1
 		elif 200 <= self.cholesterol <= 239:
-			return 1
-		elif 240 <= self.cholesterol < 279:
-			return 2
+			index = 2
+		elif 240 <= self.cholesterol < 280:
+			index = 3
 		else:
-			return 3
+			index = 4
 
-	def hdl_risk(self):
+		return cholesterol_points[self.sex][self.age_index][index]
 
-		if self.hdl < 35:
-			return 2
-		elif 35 <= self.hdl <= 44:
-			return 1
-		elif 45 <= self.hdl <= 49:
-			return 0
-		elif 50 <= self.hdl < 59:
-			return 0
-		else:
-			return -1
-
-	def pressure_risk(self):
-
-		if self.diastolic < 80:
-			if self.systolic < 130:
-				return 0
-			elif 130 <= self.systolic <= 139:
-				return 1
-			elif 140 <= self.systolic <= 159:
-				return 2
-			else:
-				return 3
-
-		elif 80 <= self.diastolic <= 84:
-			if self.systolic < 130:
-				return 0
-			elif 130 <= self.systolic <= 139:
-				return 1
-			elif 140 <= self.systolic <= 159:
-				return 2
-			else:
-				return 3
-
-		elif 85 <= self.diastolic <= 89:
-			if self.systolic < 140:
-				return 1
-			elif 140 <= self.systolic <= 159:
-				return 2
-			else:
-				return 3
-
-		elif 90 <= self.diastolic <= 99:
-			if self.systolic < 160:
-				return 2
-			else:
-				return 3
-
-		else:
-			return 3
-
-	def diabetes_risk(self):
-
-		if self.diabetes:
-			return 2
-		else:
-			return 0
 
 	def smoker_risk(self):
 
+		smoker = {
+			"male" : [
+				[0, 8],
+				[0, 8],
+				[0, 5],
+				[0, 5],
+				[0, 3],
+				[0, 3],
+				[0, 1],
+				[0, 1],
+				[0, 1],
+				[0, 1]
+			], 
+			"female" : [
+				[0, 9],
+				[0, 9],
+				[0, 7],
+				[0, 7],
+				[0, 4],
+				[0, 4],
+				[0, 2],
+				[0, 2],
+				[0, 1],
+				[0, 1]
+			]
+		}
+
 		if self.smoker:
-			return 2
+			return smoker[self.sex	][self.age_index][self.smoker]
 		else:
 			return 0
 
+
+	def hdl_risk(self):
+
+		hdl = [-1, 0, 1, 2] # keeping 1d array to be consistent
+
+		if self.hdl < 40:
+			index = 3
+		elif self.hdl <= 49:
+			index = 2
+		elif self.hdl < 59:
+			index = 1
+		else:
+			index = 0
+
+		return hdl[index] # Sex irrelevant
+
+
+	def pressure_risk(self):
+
+		pressure = {
+			"male" : [0, 1, 2, 2, 3], 
+			"female" : [0, 3, 4, 5, 6]
+		}
+
+		if self.systolic < 120:
+			index = 0
+		elif self.systolic <= 130:
+			index = 1
+		elif self.systolic < 140:
+			index = 2
+		elif self.systolic < 160:
+			index = 3
+		else:
+			index = 4
+
+		return pressure[self.sex	][index]
+
+
 	def calculate_risk(self):
 
-		points = self.age_risk() + self.ldl_risk() + self.cholesterol_risk() + self.hdl_risk() + self.pressure_risk() + self.diabetes_risk() + self.smoker_risk()
+		risk = {
+			"male" : [1, 1, 1, 1, 1, 2, 2, 3, 4, 5, 6, 8, 10, 12, 16, 20, 25],
+			"female" : [1, 1, 1, 1, 2, 2, 3, 4, 5, 6, 8, 11, 14, 17, 22, 27]
+		};
 
-		if points == -3:
-			self.risk = 1
-		elif points == -2:
-			self.risk = 2
-		elif points == -1:
-			self.risk = 2
-		elif points == 0:
-			self.risk = 3
-		elif points == 1:
-			self.risk = 4
-		elif points == 2:
-			self.risk = 4
-		elif points == 3:
-			self.risk = 5
-		elif points == 4:
-			self.risk = 7
-		elif points == 5:
-			self.risk = 9
-		elif points == 6:
-			self.risk = 11
-		elif points == 7:
-			self.risk = 14
-		elif points == 8:
-			self.risk = 18
-		elif points == 9:
-			self.risk = 22
-		elif points == 10:
-			self.risk = 27
-		elif points == 11:
-			self.risk = 33
-		elif points == 12:
-			self.risk = 40
-		elif points == 13:
-			self.risk = 47
-		else:
-			self.risk = 56
+		points = self.age_risk() + self.cholesterol_risk() + self.hdl_risk() + self.pressure_risk() + self.smoker_risk()
 
-		print(f"10 year CHD risk: {self.risk}%")
-		print(f"Average for {self.age}: {self.comparative}")
+		ten_year_risk = risk[self.sex][points]
 
-		return {"risk" : self.risk, "average" : self.comparative}
+		print(f"10 year CHD risk: {ten_year_risk}%")
+
+		return {"risk" : ten_year_risk}
 
 
 obj = calculate(
-	age = 66, # 6
-	ldl = 160, #
-	cholesterol = 101,
-	hdl = 44,
-	diastolic = 90,
-	systolic = 133,
-	diabetes = True,
-	smoker = False
+	sex = "female",
+	age = 44,
+	cholesterol = 60,
+	hdl = 60,
+	systolic = 144,
+	smoker = True
 )
 
 obj.calculate_risk()
