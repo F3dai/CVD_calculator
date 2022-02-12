@@ -27,11 +27,11 @@
 		<legend class="col-form-label col-sm-2 pt-0">Smok?</legend>
 		<div class="col-sm-10">
 			<div class="form-check">
-				<input class="form-check-input" type="radio" name="smok" id="smok1" value="yes">
+				<input class="form-check-input" type="radio" name="smoker" id="smok1" value="True">
 				<label class="form-check-label" for="smok1">Oui</label>
 			</div>
 			<div class="form-check">
-				<input class="form-check-input" type="radio" name="smok" id="smok2" value="no">
+				<input class="form-check-input" type="radio" name="smoker" id="smok2" value="False">
 				<label class="form-check-label" for="smok2">Non</label>
 			</div>
 		</div>
@@ -61,5 +61,50 @@
 		</div>
 	</div>
 
-	<button type="submit" class="btn btn-primary">Submit</button>
+	<p>This section will only be saved if submitted to database</p>
+
+	<!-- Birth Date -->
+	<div class="row mb-3">
+		<label class="col-sm-2 col-form-label">Birth Date</label>
+		<div class="col-sm-10">
+			<input type="text" class="form-control datepicker" placeholder="Select Date" name="birth_date">
+		</div>
+	</div>
+
+	<!-- NHS ID -->
+	<div class="row mb-3">
+		<label class="col-sm-2 col-form-label">NHS Number</label>
+		<div class="col-sm-10">
+			<input class="form-control" name="nhs_id">
+		</div>
+	</div>
+
+	<!-- First Name -->
+	<div class="row mb-3">
+		<label class="col-sm-2 col-form-label">First Name</label>
+		<div class="col-sm-10">
+			<input class="form-control" name="first_name">
+		</div>
+	</div>
+
+	<!-- Second Name -->
+	<div class="row mb-3">
+		<label class="col-sm-2 col-form-label">Second Name</label>
+		<div class="col-sm-10">
+			<input class="form-control" name="second_name">
+		</div>
+	</div>
+
+	<input type="submit" class="btn btn-primary" value="calculate"/>
+
+	<input type="submit" class="btn btn-primary" value="send"/>
+
 </form>
+
+<script>
+$(function(){
+	$('.datepicker').datepicker({
+		format: 'yyyy-mm-dd'
+	});
+});
+</script>
