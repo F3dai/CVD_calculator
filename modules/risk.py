@@ -3,14 +3,37 @@ class calculate:
 
 	def __init__(self, sex:str, age:int, smoker:bool, systolic:int, cholesterol:int, hdl:int):
 
-		self.sex = sex
-		self.age = age
-		self.smoker = smoker
-		self.systolic = systolic
-		self.cholesterol = cholesterol
-		self.hdl = hdl
+		self.sex = self._is_sex(sex)
+		self.age = self._is_int(age)
+		self.smoker = self._is_bool(smoker)
+		self.systolic = self._is_int(systolic)
+		self.cholesterol = self._is_int(cholesterol)
+		self.hdl = self._is_int(hdl)
 
 		self.age_index = False
+
+
+	## Validation Checks ##
+
+	def _is_int(self, item):
+		try:
+			return int(item)
+		except:
+			raise ValueError(f"{item} is not an integer.")
+	
+	def _is_sex(self, item):
+		if item in ["male", "female"]:
+			return item
+		else:
+			raise ValueError(f"{item} is not a valid sex.")
+
+	def _is_bool(self, item):
+		if item == "True":
+			return True
+		elif item == "False":
+			return False
+		else:
+			raise ValueError(f"{item} is not a boolean.")
 
 
 	def age_risk(self):
@@ -20,7 +43,7 @@ class calculate:
 		# Points for each sex, index
 		sex_points = {
 			"male": [-9, -4, 0, 3, 6, 8, 10, 11, 12, 13],
-			"female" : [-7, -3, 0, 3, 6, 8, 10, 12, 14, 16],
+			"female" : [-7, -3, 0, 3, 6, 8, 10, 12, 14, 16]
 		}
 
 		# Return index
@@ -46,19 +69,6 @@ class calculate:
 			return {"error" : f"Age out of range. Must be between 30 and 74"}
 
 		return sex_points[self.sex][index]
-
-
-	# def ldl_risk(self):
-	# 	if self.ldl < 100:
-	# 		return -3
-	# 	elif 100 <= self.ldl <= 129:
-	# 		return 0 
-	# 	elif 130 <= self.ldl <= 159:
-	# 		return 0 
-	# 	elif 160 <= self.ldl < 190:
-	# 		return 1
-	# 	else:
-	# 		return 2
 
 
 	def cholesterol_risk(self):
@@ -190,18 +200,6 @@ class calculate:
 
 		ten_year_risk = risk[self.sex][points]
 
-		print(f"10 year CHD risk: {ten_year_risk}%")
+		# print(f"10 year CHD risk: {ten_year_risk}%")
 
 		return {"risk" : ten_year_risk}
-
-
-obj = calculate(
-	sex = "female",
-	age = 44,
-	cholesterol = 60,
-	hdl = 60,
-	systolic = 144,
-	smoker = True
-)
-
-obj.calculate_risk()
