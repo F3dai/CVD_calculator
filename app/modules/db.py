@@ -18,6 +18,11 @@ def establish():
 
     #print(type(config['MySQLCFG']['host']))
 
+    print(config['MySQLCFG']['host'])
+    print(config['MySQLCFG']['user'])
+    print(config['MySQLCFG']['password'])
+    print(config['MySQLCFG']['database'])
+
     db = mysql.connector.connect(
        host=config['MySQLCFG']['host'],
        user=config['MySQLCFG']['user'],

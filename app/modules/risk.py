@@ -197,6 +197,12 @@ class calculate:
                         "male" : [1, 1, 1, 1, 1, 2, 2, 3, 4, 5, 6, 8, 10, 12, 16, 20, 25],
                         "female" : [1, 1, 1, 1, 2, 2, 3, 4, 5, 6, 8, 11, 14, 17, 22, 27]
                 };
+                
+                print(self.age_risk())
+                print(self.cholesterol_risk())
+                print(self.hdl_risk())
+                print(self.pressure_risk())
+                print(self.smoker_risk())
 
                 points = self.age_risk() + self.cholesterol_risk() + self.hdl_risk() + self.pressure_risk() + self.smoker_risk()
 
