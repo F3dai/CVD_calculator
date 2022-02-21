@@ -1,8 +1,7 @@
+from app import app 
 from flask import Flask,render_template,request,redirect,jsonify,abort
-from modules import risk, db
- 
-app = Flask(__name__)
 
+from app.modules import risk, db
 
 @app.route('/', methods = ['GET'])
 def index():
@@ -10,7 +9,7 @@ def index():
 
 # Return risk as %
 def get_risk(data:dict):
-        try:
+        #try:
                 return risk.calculate(
                         sex = data["sex"],
                         age = data["age"],
@@ -20,9 +19,10 @@ def get_risk(data:dict):
                         hdl = data["hdl"]
                 ).calculate_risk()
 
-        except Exception as response:
-                return jsonify(str(response))
-                # abort(400, "wrong input")     
+        #except Exception as response:
+        #        print("EXCEPTION:", str(response))
+        #        return str(response)
+        #        # abort(400, "wrong input")
 
 
 @app.route('/calculate', methods = ['POST', 'GET'])
@@ -41,8 +41,20 @@ def calculate():
         # Just calculate
         elif request.method == 'GET':
                 risk = get_risk(request.args)
+
+                print("request.args", request.args)
+                print("risk", risk)
                 return jsonify(risk)
 
+@app.route('/ping', methods=['GET'])
+def ping_pong():
+    return jsonify(
+            {
+                'status': 'Epic success',
+                'message': 'pong!'
+            }
+    )
 
-if __name__ == "__main__":
-        app.run() # host='localhost', port=5000
+
+#if __name__ == "__main__":
+#        app.run() # host='localhost', port=5000

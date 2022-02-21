@@ -15,5 +15,5 @@ flask run
 To auto-reload on development:
 
 ```
-FLASK_APP=app.py FLASK_ENV=development flask run
+FLASK_APP=main.py FLASK_ENV=development flask run
 ```

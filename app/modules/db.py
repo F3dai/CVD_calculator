@@ -1,12 +1,30 @@
 import mysql.connector
+import configparser
+
+
 
 def establish():
+
+    config = configparser.ConfigParser()
+
+#    db = mysql.connector.connect(
+#        host="localhost",
+#        user="cvd_account",
+#        password="james_charles00",
+#        database="CVDCalculator"
+#    )
+    print(config.read('app/modules/mysql.cfg'))
+
+
+    #print(type(config['MySQLCFG']['host']))
+
     db = mysql.connector.connect(
-        host="localhost",
-        user="cvd_account",
-        password="james_charles00",
-        database="CVDCalculator"
-    )
+       host=config['MySQLCFG']['host'],
+       user=config['MySQLCFG']['user'],
+       password=config['MySQLCFG']['password'],
+       database=config['MySQLCFG']['database'],
+        )
+
     return db
 
 
