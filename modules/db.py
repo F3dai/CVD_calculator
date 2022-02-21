@@ -11,25 +11,39 @@ def establish():
 
 
 def insert_record(data:dict, risk:int):
+
+    print(data)
+    print(risk)
+
+
     db = establish()
+    print(db)
     cursor = db.cursor()
+    print(cursor)
 
     # Breakign somewhere here
 
-    sql = f"""INSERT INTO records (nhs_id, birth_date, sex, systolic, cholesterol, hdl, first_name, second_name, chd_risk) 
-        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"""
-    val = (
-        data["nhs_id"],
-        data["birth_date"],
-        data["sex"],
-        data["systolic"],
-        data["cholesterol"],
-        data["hdl"],
-        data["first_name"],
-        data["second_name"],
-        risk
-    ) # Convert dict to tuple of values
+    print("INSIDE")
+
+    sql = ("INSERT INTO records (nhs_id, birth_date, sex, systolic, cholesterol, hdl, first_name, second_name, chd_risk) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)")
+    #add_employee = ("INSERT INTO employees (first_name, second_name, hire_date, gender, birth_date) VALUES (%s, %s, %s, %s, %s)")
     
+    print("SQL:", sql)
+
+
+    nhs_id = data["nhs_id"]
+    birth_date= data["birth_date"]
+    sex = data["sex"]
+    systolic = data["systolic"]
+    cholesterol = data["cholesterol"]
+    hdl = data["hdl"]
+    first_name = data["first_name"]
+    second_name = data["second_name"]
+    risk = risk
+
+
+    val = (nhs_id, birth_date, sex, systolic, cholesterol, hdl, first_name, second_name, risk)
+
     cursor.execute(sql, val)
     db.commit()
 
