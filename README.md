@@ -11,5 +11,5 @@ bash helpers/setup.sh
 To auto-reload on development:
 
 ```
-FLASK_APP=main.py FLASK_ENV=development flask run
+FLASK_APP=app/views.py FLASK_ENV=development flask run
 ```
