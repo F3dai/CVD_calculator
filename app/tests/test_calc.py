@@ -1,35 +1,25 @@
-import unittest
+import pytest
+from app import create_app
 
-import os
-import sys
-import inspect
+@pytest.fixture()
+def app():
+    app = create_app()
+    app.config.update({
+        "TESTING": True,
+    })
 
-#currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
-#parentdir = os.path.dirname(currentdir)
-#sys.path.insert(0, parentdir) 
+    # other setup can go here
 
-import app
+    yield app
 
-
-class TestCVD(unittest.TestCase): # add testing capabilities
-    # method to write 
-    def setup(self):
-        #appe = app.run()
-        self.client = app.test_client()
+    # clean up / reset resources here
 
 
-    def test_home(self):
-        #response = self.client.post("/", data={"content": "hello world"})
-        response = self.client.get("/ping")
-        assert response.status_code == 200
-        assert "pong!" == response.get_data(as_text=True)
+@pytest.fixture()
+def client(app):
+    return app.test_client()
 
 
-
-
-        #assert "POST method called" == response.get_data(as_text=True)
-
-if __name__ == "__main__":
-    unittest.main()
-
-
+@pytest.fixture()
+def runner(app):
+    return app.test_cli_runner()

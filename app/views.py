@@ -9,7 +9,7 @@ def index():
 
 # Return risk as %
 def get_risk(data:dict):
-        #try:
+        try:
                 return risk.calculate(
                         sex = data["sex"],
                         age = data["age"],
@@ -19,10 +19,10 @@ def get_risk(data:dict):
                         hdl = data["hdl"]
                 ).calculate_risk()
 
-        #except Exception as response:
-        #        print("EXCEPTION:", str(response))
-        #        return str(response)
-        #        # abort(400, "wrong input")
+        except Exception as response:
+                print("EXCEPTION:", str(response))
+                return str(response)
+                # abort(400, "wrong input")
 
 
 @app.route('/calculate', methods = ['POST', 'GET'])
