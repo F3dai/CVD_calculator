@@ -1,8 +1,6 @@
 import mysql.connector
 import configparser
 
-
-
 def establish():
 
     config = configparser.ConfigParser()
@@ -13,7 +11,7 @@ def establish():
 #        password="james_charles00",
 #        database="CVDCalculator"
 #    )
-    print(config.read('app/modules/mysql.cfg'))
+    print(config.read('cvd_app/modules/mysql.cfg'))
 
 
     #print(type(config['MySQLCFG']['host']))
