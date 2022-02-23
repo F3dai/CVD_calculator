@@ -1,0 +1,29 @@
+<html lang="en">
+	{% include 'header.html' %}
+	<body>
+		{% include 'nav.html' %}
+		<div class="container">
+
+			<br/>
+			<h1>Login Page</h1>
+
+			<p>Login system for GPs. Restricted to staff.</p>
+
+			<form action="{{ url_for('login') }}" method="POST">
+				<div class="mb-3">
+					<label for="exampleInputEmail1" class="form-label">Email Address</label>
+					<input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="email" >
+					<div id="emailHelp" class="form-text">Enter email address associated to account.</div>
+				</div>
+				<div class="mb-3">
+					<label for="exampleInputPassword1" class="form-label">Password</label>
+					<input type="password" class="form-control" id="exampleInputPassword1" name="password">
+				</div>
+				<div class="msg">{{ msg }}</div> <!-- errors -->
+				<button type="submit" class="btn btn-primary">Login</button>
+			</form>
+
+		</div>
+	</body>
+
+</html>
