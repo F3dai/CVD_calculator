@@ -2,9 +2,6 @@ from flask import Flask,render_template,request,redirect,jsonify,abort
 
 def create_app():
     app = Flask(__name__,template_folder='templates')
-
-
-
     from cvd_app.modules import risk, db
 
     @app.route('/', methods = ['GET'])
@@ -13,7 +10,7 @@ def create_app():
 
     # Return risk as %
     def get_risk(data:dict):
-            #try:
+            try:
                     return risk.calculate(
                             sex = data["sex"],
                             age = data["age"],
@@ -23,9 +20,9 @@ def create_app():
                             hdl = data["hdl"]
                     ).calculate_risk()
     
-            #except Exception as response:
-            #        print("EXCEPTION:", str(response))
-            #        return str(response)
+            except Exception as response:
+                    print("EXCEPTION:", str(response))
+                    return str(response)
             #        # abort(400, "wrong input")
     
     
@@ -33,21 +30,17 @@ def create_app():
     def calculate():
            # Submit data to database
            if request.method == 'POST':
-                   print(request.form)
+
                    risk = get_risk(request.form)["risk"]
-                   print("RISK:", risk)
-                   print("REQ:", request.form)
                    res = db.insert_record(request.form, risk)
-    
-                   print("RES:", res)
                    return jsonify(res)
     
            # Just calculate
            elif request.method == 'GET':
                    risk = get_risk(request.args)
     
-                   print("request.args", request.args)
-                   print("risk", risk)
+                   #print("request.args", request.args)
+                   #print("risk", risk)
                    return jsonify(risk)
     
 

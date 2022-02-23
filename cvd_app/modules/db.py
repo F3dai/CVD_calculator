@@ -21,26 +21,37 @@ def establish():
     print(config['MySQLCFG']['password'])
     print(config['MySQLCFG']['database'])
 
-    db = mysql.connector.connect(
-       host=config['MySQLCFG']['host'],
-       user=config['MySQLCFG']['user'],
-       password=config['MySQLCFG']['password'],
-       database=config['MySQLCFG']['database'],
-        )
 
-    return db
+    try:
+        dbconn = mysql.connector.connect(
+           host=config['MySQLCFG']['host'],
+           user=config['MySQLCFG']['user'],
+           password=config['MySQLCFG']['password'],
+           database=config['MySQLCFG']['database'],
+            )
+
+
+        if dbconn.is_connected():
+            db_Info = dbconn.get_server_info()
+            print("Connected to MySQL Server version ", db_Info)
+    
+            cursor = dbconn.cursor()
+            cursor.execute("select database();")
+            record = cursor.fetchone()
+            cursor.close()
+            print("You're connected to database: ", record)
+            return dbconn
+
+    except Error as e:
+        print("Error while connecting to MySQL", e)
+
 
 
 def insert_record(data:dict, risk:int):
 
-    print(data)
-    print(risk)
-
 
     db = establish()
-    print(db)
     cursor = db.cursor()
-    print(cursor)
 
     # Breakign somewhere here
 
@@ -67,5 +78,5 @@ def insert_record(data:dict, risk:int):
 
     cursor.execute(sql, val)
     db.commit()
-
+    db.close()
     return f"{cursor.rowcount} change(s) made"

@@ -19,21 +19,23 @@ class calculate:
                 try:
                         return int(item)
                 except:
-                        raise ValueError(f"{item} is not an integer.")
+                        raise ValueError(f"ERROR: {item} is not an integer.")
         
+
         def _is_sex(self, item):
                 if item in ["male", "female"]:
                         return item
                 else:
-                        raise ValueError(f"{item} is not a valid sex.")
+                        raise ValueError(f"ERROR: {item} is not a valid sex.")
+
 
         def _is_bool(self, item):
-                if item == "True":
+                if item == "True" or item == "true":
                         return True
-                elif item == "False":
+                elif item == "False" or item == "false":
                         return False
                 else:
-                        raise ValueError(f"{item} is not a boolean.")
+                        raise ValueError(f"ERROR: {item} is not a boolean.")
 
 
         def age_risk(self):
@@ -45,28 +47,43 @@ class calculate:
                         "male": [-9, -4, 0, 3, 6, 8, 10, 11, 12, 13],
                         "female" : [-7, -3, 0, 3, 6, 8, 10, 12, 14, 16]
                 }
+                
+                print(self.age)
 
                 # Return index
-                if 30 <= self.age <= 34:
+                if self.age < 30:
+                    return -1
+
+                elif self.age <= 34:
+                        print("OK")
                         self.age_index =  0
                 elif self.age <= 39:
+                        print("OK")
                         self.age_index =  1
                 elif self.age <= 44:
+                        print("OK")
                         self.age_index =  2
                 elif self.age <= 49:
+                        print("OK")
                         self.age_index =  3
                 elif self.age <= 54:
+                        print("OK")
                         self.age_index =  4
                 elif self.age <= 59:
+                        print("OK")
                         self.age_index =  5
                 elif self.age <= 64:
+                        print("OK")
                         self.age_index =  6
                 elif self.age <= 69:
+                        print("OK")
                         self.age_index =  7
                 elif self.age <= 74:
+                        print("OK")
                         self.age_index =  8
+                
                 else:
-                        return {"error" : f"Age out of range. Must be between 30 and 74"}
+                    return -1
 
                 return sex_points[self.sex][index]
 
@@ -191,7 +208,7 @@ class calculate:
 
         def calculate_risk(self):
 
-                print("calculate_risk")
+                #print("calculate_risk")
 
                 risk = {
                         "male" : [1, 1, 1, 1, 1, 2, 2, 3, 4, 5, 6, 8, 10, 12, 16, 20, 25],
@@ -203,16 +220,14 @@ class calculate:
                 print(self.hdl_risk())
                 print(self.pressure_risk())
                 print(self.smoker_risk())
-
-                points = self.age_risk() + self.cholesterol_risk() + self.hdl_risk() + self.pressure_risk() + self.smoker_risk()
-
-                ten_year_risk = risk[self.sex][points]
-
-                # print(f"10 year CHD risk: {ten_year_risk}%")
                 
 
-                print("risk")
+                if self.age_risk() == -1:
+                    return "ERROR: age error."
+
+
+                points = self.age_risk() + self.cholesterol_risk() + self.hdl_risk() + self.pressure_risk() + self.smoker_risk()
+                ten_year_risk = risk[self.sex][points]
+                # #print(f"10 year CHD risk: {ten_year_risk}%")
+
                 return {"risk" : ten_year_risk}
-
-
-
