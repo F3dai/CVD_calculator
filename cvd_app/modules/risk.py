@@ -16,10 +16,11 @@ class calculate:
         ## Validation Checks ##
 
         def _is_int(self, item):
-                try:
-                        return int(item)
-                except:
-                        raise ValueError(f"ERROR: {item} is not an integer.")
+            if item.isnumeric():
+                print("Val is numeric")
+                return int(item)
+            else:
+                raise ValueError(f"ERROR: {item} is not an integer.")
         
 
         def _is_sex(self, item):
@@ -81,8 +82,9 @@ class calculate:
                 elif self.age <= 74:
                         print("OK")
                         self.age_index =  8
-                
+
                 else:
+                    print("this should never hit")
                     return -1
 
                 return sex_points[self.sex][index]
