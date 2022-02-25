@@ -1,5 +1,5 @@
 
-class calculate:
+class Calculate:
 
         def __init__(self, sex:str, age:int, smoker:bool, systolic:int, cholesterol:int, hdl:int):
 

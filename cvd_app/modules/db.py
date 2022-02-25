@@ -1,82 +1,81 @@
+# cvd_app/modules/db.py
+
 import mysql.connector
+from flask_mysqldb import MySQL
+import MySQLdb.cursors
 import configparser
 
-def establish():
+class Database:
 
-    config = configparser.ConfigParser()
-
-#    db = mysql.connector.connect(
-#        host="localhost",
-#        user="cvd_account",
-#        password="james_charles00",
-#        database="CVDCalculator"
-#    )
-    print(config.read('cvd_app/modules/mysql.cfg'))
-
-
-    #print(type(config['MySQLCFG']['host']))
-
-    print(config['MySQLCFG']['host'])
-    print(config['MySQLCFG']['user'])
-    print(config['MySQLCFG']['password'])
-    print(config['MySQLCFG']['database'])
+    # Just pass in Flask app object
+    def __init__(self, app):
+        self.app = app
+        configpars = configparser.ConfigParser()
+        self.mysql = MySQL(self.app)
+        configpars.read('cvd_app/modules/mysql.cfg')
+        self.app.secret_key                       = b'1-#yC"!Fb80z\n\xec]/'
+        self.app.config['MYSQL_HOST']     = configpars['MySQLCFG']['host']
+        self.app.config['MYSQL_USER']     = configpars['MySQLCFG']['user']
+        self.app.config['MYSQL_PASSWORD'] = configpars['MySQLCFG']['password']
+        self.app.config['MYSQL_DB']       = configpars['MySQLCFG']['database']
 
 
-    try:
-        dbconn = mysql.connector.connect(
-           host=config['MySQLCFG']['host'],
-           user=config['MySQLCFG']['user'],
-           password=config['MySQLCFG']['password'],
-           database=config['MySQLCFG']['database'],
-            )
+    def insert_record(self, data:dict, risk:int):
+        
+        sql = ("INSERT INTO records (nhs_id, birth_date, sex, systolic, cholesterol, hdl, first_name, second_name, chd_risk) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)")
+        #add_employee = ("INSERT INTO employees (first_name, second_name, hire_date, gender, birth_date) VALUES (%s, %s, %s, %s, %s)")
+
+        print("SQL:", sql)
+
+        nhs_id = data["nhs_id"]
+        birth_date= data["birth_date"]
+        sex = data["sex"]
+        systolic = data["systolic"]
+        cholesterol = data["cholesterol"]
+        hdl = data["hdl"]
+        first_name = data["first_name"]
+        second_name = data["second_name"]
+        risk = risk
+        
+        val = (nhs_id, birth_date, sex, systolic, cholesterol, hdl, first_name, second_name, risk)
+
+        # gogogogo working
+        cursor = self.mysql.connection.cursor()
+        cursor.execute(sql, val)
+        self.mysql.connection.commit()
+        cursor.close()
 
 
-        if dbconn.is_connected():
-            db_Info = dbconn.get_server_info()
-            print("Connected to MySQL Server version ", db_Info)
-    
-            cursor = dbconn.cursor()
-            cursor.execute("select database();")
-            record = cursor.fetchone()
-            cursor.close()
-            print("You're connected to database: ", record)
-            return dbconn
-
-    except Error as e:
-        print("Error while connecting to MySQL", e)
+        return f"{cursor.rowcount} change(s) made"
 
 
+    def check_account(self, email, password):
+        # db = establish()
+        # cursor = db.cursor(dictionary=True)
 
-def insert_record(data:dict, risk:int):
+        sql = "SELECT * FROM accounts WHERE email = %s AND password = %s"
+        val = (email, password)
 
+        cursor = self.mysql.connection.cursor()
+        cursor.execute(sql, val)
+        self.mysql.connection.commit()
+        account = cursor.fetchone()
+        cursor.close()
 
-    db = establish()
-    cursor = db.cursor()
+        return account 
 
-    # Breakign somewhere here
+    def show_profile(self, email):
+        # db = establish()
+        # cursor = db.cursor()
 
-    print("INSIDE")
+        cursor = self.mysql.connection.cursor(MySQLdb.cursors.DictCursor)
 
-    sql = ("INSERT INTO records (nhs_id, birth_date, sex, systolic, cholesterol, hdl, first_name, second_name, chd_risk) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)")
-    #add_employee = ("INSERT INTO employees (first_name, second_name, hire_date, gender, birth_date) VALUES (%s, %s, %s, %s, %s)")
-    
-    print("SQL:", sql)
+        sql = "SELECT * FROM accounts WHERE email = %s"
+        val = (email,)
 
-
-    nhs_id = data["nhs_id"]
-    birth_date= data["birth_date"]
-    sex = data["sex"]
-    systolic = data["systolic"]
-    cholesterol = data["cholesterol"]
-    hdl = data["hdl"]
-    first_name = data["first_name"]
-    second_name = data["second_name"]
-    risk = risk
-
-
-    val = (nhs_id, birth_date, sex, systolic, cholesterol, hdl, first_name, second_name, risk)
-
-    cursor.execute(sql, val)
-    db.commit()
-    db.close()
-    return f"{cursor.rowcount} change(s) made"
+        cursor = self.mysql.connection.cursor()
+        cursor.execute(sql, val)
+        self.mysql.connection.commit()
+        account = cursor.fetchone()
+        cursor.close()
+        return account 
