@@ -3,18 +3,7 @@ from flask_mysqldb import MySQL
 import MySQLdb.cursors
 
 # Some of these functions can def be reduced:
-# just change sql query for each func then execute in seperate funcn
-
-
-## Dont need this anymore - replaced by MySQL(app)
-# def establish():
-#     db = mysql.connector.connect(
-#         host="localhost",
-#         user="cvd_account",
-#         password="james_charles00",
-#         database="CVDCalculator"
-#     )
-#     return db
+# just change sql query for each func then execute in seperate func
 
 class Database:
 
@@ -32,6 +21,8 @@ class Database:
 
     def insert_record(self, data:dict, risk:int):
 
+        cursor = self.mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+
         sql = """INSERT INTO records (nhs_id, birth_date, sex, systolic, cholesterol, hdl, first_name, second_name, chd_risk) 
             VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"""
         val = (
@@ -47,14 +38,11 @@ class Database:
         ) # Convert dict to tuple of values
         
         cursor.execute(sql, val)
-        db.commit()
+        self.mysql.connection.commit()
 
         return f"{cursor.rowcount} change(s) made"
 
     def check_account(self, email, password):
-        # db = establish()
-        # cursor = db.cursor(dictionary=True)
-
         cursor = self.mysql.connection.cursor(MySQLdb.cursors.DictCursor)
 
         sql = "SELECT * FROM accounts WHERE email = %s AND password = %s"
@@ -66,9 +54,6 @@ class Database:
         return account 
 
     def show_profile(self, email):
-        # db = establish()
-        # cursor = db.cursor()
-
         cursor = self.mysql.connection.cursor(MySQLdb.cursors.DictCursor)
 
         sql = "SELECT * FROM accounts WHERE email = %s"
