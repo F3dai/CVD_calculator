@@ -14,4 +14,11 @@ export FLASK_ENV=development
 flask run
 ```
 
-To auto-reload on development:
+## To do: 
+
+ - ~~Hash passwords~~
+ - Make all sql type/lengths proper
+ - Refactor stuff
+ - Statistics page
+ - Add handling for duplicates (NHS ID?)
+ - Untested - what happens when info is submitted for same NHS ID

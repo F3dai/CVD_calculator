@@ -42,11 +42,11 @@ class Database:
 
         return f"{cursor.rowcount} change(s) made"
 
-    def check_account(self, email, password):
+    def check_account(self, email):
         cursor = self.mysql.connection.cursor(MySQLdb.cursors.DictCursor)
 
-        sql = "SELECT * FROM accounts WHERE email = %s AND password = %s"
-        val = (email, password)
+        sql = "SELECT * FROM accounts WHERE email = %s"
+        val = (email,)
 
         cursor.execute(sql, val)
 
@@ -62,3 +62,13 @@ class Database:
         cursor.execute(sql, val)
 
         return cursor.fetchone() # Fetch one record and return res
+
+    def show_records(self):
+        cursor = self.mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+
+        sql = "SELECT * FROM records"
+        # val = (email,)
+
+        cursor.execute(sql)
+
+        return cursor.fetchall() # Fetch one record and return res

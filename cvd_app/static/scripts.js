@@ -1,4 +1,6 @@
 $(document).ready(function(){
+  var result = $("#result");
+  result.css('display', 'none');
   $("#form input[type=submit]").click(function(event){
     var option = $(this).val();
     // Determine which button clicked and request type
@@ -9,16 +11,21 @@ $(document).ready(function(){
       var request_type = "POST";
     }
     $.ajax({
-      url: "calculate", 
-      data: $("#form").serialize(), 
-      type: request_type, 
+      url: "calculate",
+      data: $("#form").serialize(),
+      type: request_type,
       dataType: 'json',
       success: function (res) {
-        console.log(`Successful ${request_type} request. Data: ${res.result}`);
-        $("#result").html(JSON.stringify(res));
+        result.css('display', 'block');
+        if (request_type == "POST") { // probs cleaner way to do this
+          result.html(`${res}`);
+        } else {
+          result.html(`10 year cardiovascular risk: ${res.risk}%`);
+        }
       },
       error:function(e){
-        alert(JSON.stringify(e));
+        result.css('display', 'block');
+        result.html("ERROR. Check python console output");
       }
     });
     event.preventDefault();

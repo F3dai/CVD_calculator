@@ -9,11 +9,16 @@
 
 			<p>ree.</p>
 
-			{% include 'form.html' %}
+			<hr>
 
+			{% extends 'form.html' %}
+			{% block extra_form %}
+			{% if authenticated %}
+				{% include 'authenticated_form.html' %}
+			{% endif %}
+			{% endblock extra_form %}
+			
 			<br />
-
-			<p id="result"></p>
 
 		</div>
 	</body>

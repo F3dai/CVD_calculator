@@ -2,3 +2,4 @@ flask
 mysql-connector-python
 configparser
 flask_mysqldb
+flask_bcrypt

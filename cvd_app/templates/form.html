@@ -61,45 +61,15 @@
 		</div>
 	</div>
 
-	<p>This section will only be saved if submitted to database</p>
-
-	<!-- Birth Date -->
-	<div class="row mb-3">
-		<label class="col-sm-2 col-form-label">Birth Date</label>
-		<div class="col-sm-10">
-			<input type="text" class="form-control datepicker" placeholder="Select Date" name="birth_date">
-		</div>
-	</div>
-
-	<!-- NHS ID -->
-	<div class="row mb-3">
-		<label class="col-sm-2 col-form-label">NHS Number</label>
-		<div class="col-sm-10">
-			<input class="form-control" name="nhs_id">
-		</div>
-	</div>
-
-	<!-- First Name -->
-	<div class="row mb-3">
-		<label class="col-sm-2 col-form-label">First Name</label>
-		<div class="col-sm-10">
-			<input class="form-control" name="first_name">
-		</div>
-	</div>
-
-	<!-- Second Name -->
-	<div class="row mb-3">
-		<label class="col-sm-2 col-form-label">Second Name</label>
-		<div class="col-sm-10">
-			<input class="form-control" name="second_name">
-		</div>
-	</div>
-
 	<input type="submit" class="btn btn-primary" value="calculate"/>
 
-	<input type="submit" class="btn btn-primary" value="send"/>
+	<br /><br />
+
+	{% block extra_form %}{% endblock %}
 
 </form>
+
+<p class="fw-bold p-3 mb-2 bg-warning text-dark" id="result"></p>
 
 <script>
 $(function(){

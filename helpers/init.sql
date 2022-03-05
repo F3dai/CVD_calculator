@@ -6,7 +6,7 @@ CREATE TABLE accounts (
 	second_name varchar(255) NOT NULL,
 	email varchar(255),
     role varchar(255) NOT NULL,
-	password varchar(255) NOT NULL,
+	password CHAR(60) BINARY NOT NULL,
 	PRIMARY KEY (id)
 );
 CREATE TABLE records (
@@ -26,9 +26,9 @@ CREATE TABLE records (
 # Add in random data
 
 INSERT INTO accounts (first_name, second_name, email, role, password)
-VALUES ("Sev", "Hayrapet", "sev@an.com", "admin", "password123"); #
+VALUES ("Sev", "Hayrapet", "sev@an.com", "admin", "$2b$12$gpRwkPTXziQTCQzJLJiOcuJ0ONGAYCnrW2lxzQOvHLeVJt68gj7zO"); #
 INSERT INTO accounts (first_name, second_name, email, role, password)
-VALUES ("Terry", "Davis", "terry@gmail.com", "gp", "password321"); 
+VALUES ("Terry", "Davis", "terry@gmail.com", "gp", "$2b$12$EhU9ol5oInHWNPfPV8WTbeCYFzYhGKdxa7z2nvs3DTbfU73lypj.C"); 
 
 INSERT INTO records (nhs_id, first_name, second_name, birth_date, sex, systolic, cholesterol, hdl, chd_risk)
 VALUES (69, "Jeffrey", "Bozo", "1900-01-25", "male", 100, 100, 100, 25); 

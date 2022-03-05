@@ -1,4 +1,5 @@
 from cvd_app.modules import risk, db
+from flask_bcrypt import Bcrypt
 from flask import (
 	Flask,
 	render_template,
@@ -9,13 +10,15 @@ from flask import (
 	url_for
 )
 
+
 def create_app():
 	app = Flask(__name__, template_folder='templates')
+	bcrypt = Bcrypt(app)
 	database = db.Database(app)
 
 	@app.route('/', methods = ['GET'])
 	def index():
-		return render_template('index.html')
+		return render_template('index.html', authenticated=is_authenticated(session))
 
 	# Return risk as %
 	# Move this to another file??
@@ -34,6 +37,12 @@ def create_app():
 			return jsonify(str(response))
 			# abort(400, "wrong input")	
 
+	# Check if authentication is true in session
+	def is_authenticated(session):
+		if 'loggedin' in session:
+			return True
+		else:
+			return False
 
 	@app.route('/calculate', methods = ['POST', 'GET'])
 	def calculate():
@@ -48,6 +57,7 @@ def create_app():
 		# Just calculate
 		elif request.method == 'GET':
 			risk = get_risk(request.args)
+			print(risk)
 			return jsonify(risk)
 
 
@@ -57,13 +67,13 @@ def create_app():
 		if request.method == 'POST' and 'email' in request.form and 'password' in request.form:
 			# Create variables for easy access
 			email = request.form['email']
-			password = request.form['password']
-			print(email, password)
-			account = database.check_account(email, password)
+			password_raw = request.form['password']
+			# hashing
+			# password_hash = bcrypt.generate_password_hash(password_raw)
 
-			print(account)
+			account = database.check_account(email) # account as dict
 
-			if account:
+			if bcrypt.check_password_hash(account["password"], password_raw):
 				# Create session data, we can access this data in other routes
 				session['loggedin'] = True
 				session['email'] = account['email']
@@ -74,7 +84,7 @@ def create_app():
 				msg = 'No account or bad password reeee'
 
 		# Output message if something goes wrong...
-		return render_template('login.html', response=msg)
+		return render_template('login.html', response=msg, authenticated=is_authenticated(session))
 
 
 	@app.route('/logout')
@@ -89,9 +99,17 @@ def create_app():
 
 	@app.route('/profile')
 	def profile():
-		if 'loggedin' in session:
+		if is_authenticated(session):
 			res:dict = database.show_profile(session['email'])
-			return render_template('profile.html', data=res)
+			return render_template('profile.html', data=res, authenticated=is_authenticated(session))
+		else:
+			return redirect(url_for('login'))
+	
+	@app.route('/records')
+	def records():
+		if is_authenticated(session):
+			res:dict = database.show_records()
+			return render_template('records.html', records=res, authenticated=is_authenticated(session))
 		else:
 			return redirect(url_for('login'))
 
