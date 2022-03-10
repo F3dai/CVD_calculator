@@ -75,10 +75,20 @@ def create_app():
 
 
 
-            # check age is an integer
-            if not isinstance(int(data['age']), int):
-                # value is not an integer
-                errorlist.append("age is not an integer")
+            
+
+
+
+                # value is an integer 
+
+#            except TypeError:
+                #raise ValueError(f"{item} is not an integer.")
+#                errorlist.append("age is not an integer")
+
+
+
+
+
 
             # check age is male or female 
             if not data['sex'] in ["male", "female"]:
@@ -90,13 +100,21 @@ def create_app():
                 # value is not True or False for smoker status
                 errorlist.append("smoking status is not True or False")
 
-            if int(data['age']) < 30:
-                # too young
-                errorlist.append("age is too young")
+            # check age is an integer
+            try:
+                age = int(data['age'])
+    
+                if int(data['age']) < 30:
+                    # too young
+                    errorlist.append("age is too young")
             
-            if int(data['age']) > 74:
-                # too old
-                errorlist.append("age is too old")
+                if int(data['age']) > 74:
+                    # too old
+                    errorlist.append("age is too old")
+    
+            except ValueError:
+                errorlist.append("age is not an integer")
+
 
             if errorlist:
                 #print({"ERROR": "" + str(errorlist)})
@@ -135,6 +153,15 @@ def create_app():
                         risk = get_risk(request.args)
                         return jsonify(risk)
 
+
+        @app.route('/ping', methods=['GET'])
+        def ping_pong():
+           return jsonify(
+                   {
+                       'status': 'Epic success',
+                       'message': 'pong!'
+                   }
+            )
 
         @app.route('/login', methods = ['POST', 'GET'])
         def login():

@@ -17,9 +17,13 @@ def test_bad_sex():
     response = test_client.get('/calculate', query_string=query_string_temp.format('BAD', '35', 'True', '100', '100', '100'))
     data = json.loads(response.get_data(as_text=True))
     assert response.status_code == 200
-    assert b"ERROR:" in response.data
-    assert b"is not a valid sex." in response.data
+    assert data['ERROR']
 
+    assert data['ERROR'] == "['sex is not male or female']" 
+
+
+
+"""
 def test_bad_age():
     #Age out of range. Must be between 30 and 74
     response = test_client.get('/calculate', query_string=query_string_temp.format('male', '1', 'True', '100', '100', '100'))
@@ -77,3 +81,6 @@ def test_bad_hdl_int():
     assert response5.status_code == 200
     assert b"ERROR:" in response5.data
     assert b"is not an integer." in response5.data
+
+
+"""
