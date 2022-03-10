@@ -46,20 +46,93 @@ def create_app():
                 else:
                         return False
 
+
+        
+
+
+        def checkem(data):
+            # this function checks for data validation issues
+            #print(data)
+
+
+            errorlist = []
+            params = []
+
+
+
+            # 1 check all values are present
+            # ImmutableMultiDict([('sex', 'male'), ('age', '75'), ('smoker', 'True'), ('systolic', '100'), ('cholesterol', '100'), ('hdl', '100')])
+            if (data['sex'] and data['age'] and data['smoker'] and data['systolic'] and data['cholesterol'] and data['hdl']):
+                print("All get params are there")
+            else:
+                for i in data:
+                    print(data[i])
+                    if not data[i]:
+                        params.append(i)
+                errorlist.append("Missing parameter[s]: " + str(params))
+                kek =  {"ERROR": "" + str(errorlist)}
+                return kek
+
+
+
+            # check age is an integer
+            if not isinstance(int(data['age']), int):
+                # value is not an integer
+                errorlist.append("age is not an integer")
+
+            # check age is male or female 
+            if not data['sex'] in ["male", "female"]:
+                # value is not male or female
+                errorlist.append("sex is not male or female")
+
+            # check smoker is True or false
+            if not (data['smoker'] == "True" or data['smoker'] == "False"):
+                # value is not True or False for smoker status
+                errorlist.append("smoking status is not True or False")
+
+            if int(data['age']) < 30:
+                # too young
+                errorlist.append("age is too young")
+            
+            if int(data['age']) > 74:
+                # too old
+                errorlist.append("age is too old")
+
+            if errorlist:
+                #print({"ERROR": "" + str(errorlist)})
+                kek =  {"ERROR": "" + str(errorlist)}
+                #print(kek)
+                return kek
+            else:
+                return "" # nice
+
+            # check systolic
+
+            # check cholesterol
+
+            # check hdl
+
         @app.route('/calculate', methods = ['POST', 'GET'])
         def calculate():
                 # Submit data to database
                 if request.method == 'POST':
-                        print(request.form)
+                        #print(request.form)
                         risk = get_risk(request.form)["risk"]
                         res = database.insert_record(request.form, risk)
-                        print(res)
+                        #/print(res)
                         return jsonify(res)
 
                 # Just calculate
                 elif request.method == 'GET':
+
+                        # if checkem fails, return the output
+                        print("test")
+                        kek = checkem(request.args)
+                        print(kek)
+                        if "ERROR" in kek:
+                            return kek
+
                         risk = get_risk(request.args)
-                        print(risk)
                         return jsonify(risk)
 
 
