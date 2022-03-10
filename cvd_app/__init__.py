@@ -47,18 +47,12 @@ def create_app():
                         return False
 
 
-        
-
-
         def checkem(data):
             # this function checks for data validation issues
             #print(data)
 
-
             errorlist = []
-            params = []
-
-
+            params = [] 
 
             # 1 check all values are present
             # ImmutableMultiDict([('sex', 'male'), ('age', '75'), ('smoker', 'True'), ('systolic', '100'), ('cholesterol', '100'), ('hdl', '100')])
@@ -72,22 +66,6 @@ def create_app():
                 errorlist.append("Missing parameter[s]: " + str(params))
                 kek =  {"ERROR": "" + str(errorlist)}
                 return kek
-
-
-
-            
-
-
-
-                # value is an integer 
-
-#            except TypeError:
-                #raise ValueError(f"{item} is not an integer.")
-#                errorlist.append("age is not an integer")
-
-
-
-
 
 
             # check age is male or female 
@@ -115,7 +93,26 @@ def create_app():
             except ValueError:
                 errorlist.append("age is not an integer")
 
+            # check systolic
+            try:
+                systolic = int(data['systolic'])
+            except ValueError:
+                errorlist.append("systolic is not an integer")
 
+            # check cholesterol
+            try:
+                systolic = int(data['cholesterol'])
+            except ValueError:
+                errorlist.append("cholesterol is not an integer")
+
+            # check hdl
+            try:
+                systolic = int(data['hdl'])
+            except ValueError:
+                errorlist.append("hdl is not an integer")
+
+
+            ########## END HERE ##########
             if errorlist:
                 #print({"ERROR": "" + str(errorlist)})
                 kek =  {"ERROR": "" + str(errorlist)}
@@ -124,11 +121,6 @@ def create_app():
             else:
                 return "" # nice
 
-            # check systolic
-
-            # check cholesterol
-
-            # check hdl
 
         @app.route('/calculate', methods = ['POST', 'GET'])
         def calculate():
