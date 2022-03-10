@@ -8,7 +8,7 @@ cd CVD_calculator
 docker-compose up
 ```
 
-URL: http://localhost:8000
+URL: http://localhost:5000
 
 And to stop:
 
