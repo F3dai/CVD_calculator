@@ -1,0 +1,26 @@
+version: "3"
+services:
+  app:
+    build: .
+    links:
+      - db
+    depends_on:
+      - db
+    ports:
+      - "5000:5000"
+
+  db:
+    container_name: "cvd_mysql"
+    image: "docker.io/mysql"
+    restart: always
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_DATABASE: 'CVDCalculator'
+      MYSQL_USER: 'cvd_account'
+      MYSQL_PASSWORD: 'james_charles00'
+      # Password for root access
+      MYSQL_ROOT_PASSWORD: 'root'
+    ports:
+      - '3307:3306'
+    volumes:
+      - ./helpers/db:/docker-entrypoint-initdb.d

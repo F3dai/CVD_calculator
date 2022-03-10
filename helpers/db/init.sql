@@ -1,5 +1,5 @@
-CREATE DATABASE CVDCalculator;
-USE CVDCalculator;
+-- CREATE DATABASE CVDCalculator;
+-- USE CVDCalculator;
 CREATE TABLE accounts (
     id int NOT NULL AUTO_INCREMENT,
     first_name varchar(255) NOT NULL,
@@ -11,7 +11,7 @@ CREATE TABLE accounts (
 );
 CREATE TABLE records (
     id int NOT NULL AUTO_INCREMENT,
-    nhs_id int NOT NULL,
+    nhs_id int(10) NOT NULL,
 	first_name varchar(255) NOT NULL,
 	second_name varchar(255) NOT NULL,
 	birth_date DATE,
@@ -35,6 +35,6 @@ VALUES (69, "Jeffrey", "Bozo", "1900-01-25", "male", 100, 100, 100, 25);
 
 # Create web app mysql user
 
-CREATE USER 'cvd_account'@'localhost' IDENTIFIED BY 'james_charles00';
-GRANT ALL PRIVILEGES ON CVDCalculator . * TO 'cvd_account'@'localhost';
-FLUSH PRIVILEGES;
+-- CREATE USER 'cvd_account'@'localhost' IDENTIFIED BY 'james_charles00';
+-- GRANT ALL PRIVILEGES ON CVDCalculator . * TO 'cvd_account'@'localhost';
+-- FLUSH PRIVILEGES;
