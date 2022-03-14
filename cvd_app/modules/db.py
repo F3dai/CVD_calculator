@@ -13,7 +13,7 @@ class Database:
 
         self.mysql = MySQL(self.app)
         self.app.secret_key = b'1-#yC"!Fb80z\n\xec]/'
-        self.app.config['MYSQL_HOST'] = 'db'
+        self.app.config['MYSQL_HOST'] = 'localhost'
         self.app.config['MYSQL_USER'] = 'cvd_account'
         self.app.config['MYSQL_PASSWORD'] = 'james_charles00'
         self.app.config['MYSQL_DB'] = 'CVDCalculator'
