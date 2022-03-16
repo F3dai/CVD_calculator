@@ -1,76 +1,77 @@
-import mysql.connector
-from flask_mysqldb import MySQL
-import MySQLdb.cursors
-
-# Some of these functions can def be reduced:
-# just change sql query for each func then execute in seperate func
+from sqlalchemy import (
+    create_engine, 
+    Table, 
+    MetaData,
+    select,
+    insert
+)
 
 class Database:
 
     # Just pass in Flask app object
     def __init__(self, app):
         self.app = app
-
-        self.mysql = MySQL(self.app)
         self.app.secret_key = b'1-#yC"!Fb80z\n\xec]/'
-        self.app.config['MYSQL_HOST'] = 'localhost'
-        self.app.config['MYSQL_USER'] = 'cvd_account'
-        self.app.config['MYSQL_PASSWORD'] = 'james_charles00'
-        self.app.config['MYSQL_DB'] = 'CVDCalculator'
-        # self.app.config['MYSQL_PORT'] = 3307 # non default
+
+        username = "cvd_account"
+        password = "james_charles00"
+        host = "localhost"
+        port = 3306
+        database = "CVDCalculator"
+        sql_arg = "" # "?auth_plugin=mysql_native_password"
+
+        # Engine and db connection
+        self.engine = create_engine(f"mysql+mysqlconnector://{username}:{password}@{host}:{port}/{database}{sql_arg}")
+        self.conn = self.engine.connect()
+
+        # Creating table classes
+        self.accounts_table = Table('accounts', MetaData(), autoload=True, autoload_with=self.engine)
+        self.records_table = Table('records', MetaData(), autoload=True, autoload_with=self.engine)
 
 
+    def insert_record(self, data:dict):
 
-    def insert_record(self, data:dict, risk:int):
+        print(data)
 
-        cursor = self.mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-
-        sql = """INSERT INTO records (nhs_id, birth_date, sex, systolic, cholesterol, hdl, first_name, second_name, chd_risk) 
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"""
-        val = (
-            data["nhs_id"],
-            data["birth_date"],
-            data["sex"],
-            data["systolic"],
-            data["cholesterol"],
-            data["hdl"],
-            data["first_name"],
-            data["second_name"],
-            risk
-        ) # Convert dict to tuple of values
+        query = (
+            insert(self.records_table).values({
+                # There were some issues with passing data variable so just gonna hard code this shit instead for now
+                    'sex': data["sex"], 
+                    'age': int(data["age"]), 
+                    'smoker': bool(data["smoker"]), 
+                    'systolic': int(data["systolic"]), 
+                    'cholesterol': int(data["cholesterol"]), 
+                    'hdl': int(data["hdl"]), 
+                    'birth_date': data["birth_date"], 
+                    'nhs_id': int(data["nhs_id"]), 
+                    'first_name': data["first_name"], 
+                    'second_name': data["second_name"], 
+                    'chd_risk': int(data["risk"])
+                }
+            )
+        )
         
-        cursor.execute(sql, val)
-        self.mysql.connection.commit()
+        self.conn.execute(query)
 
-        return f"{cursor.rowcount} change(s) made"
+        return "Done"
 
     def check_account(self, email):
-        cursor = self.mysql.connection.cursor(MySQLdb.cursors.DictCursor)
 
-        sql = "SELECT * FROM accounts WHERE email = %s"
-        val = (email,)
-
-        cursor.execute(sql, val)
-
-        account = cursor.fetchone()
-        return account 
+        query = select(self.accounts_table).where(self.accounts_table.c.email == email)
+        result = self.conn.execute(query)
+        result = result.mappings().all()[0]
+        return result
 
     def show_profile(self, email):
-        cursor = self.mysql.connection.cursor(MySQLdb.cursors.DictCursor)
 
-        sql = "SELECT * FROM accounts WHERE email = %s"
-        val = (email,)
-
-        cursor.execute(sql, val)
-
-        return cursor.fetchone() # Fetch one record and return res
+        query = select(self.accounts_table).where(self.accounts_table.c.email == email)
+        result = self.conn.execute(query)
+        result = result.mappings().all()[0]
+        return result
 
     def show_records(self):
-        cursor = self.mysql.connection.cursor(MySQLdb.cursors.DictCursor)
 
-        sql = "SELECT * FROM records"
-        # val = (email,)
-
-        cursor.execute(sql)
-
-        return cursor.fetchall() # Fetch one record and return res
+        query = select(self.records_table)
+        result = self.conn.execute(query)
+        result = result.mappings().all()
+        return result # Fetch one record and return res

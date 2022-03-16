@@ -1,4 +1,3 @@
-
 from flask_bcrypt import Bcrypt
 from flask import (
         Flask,
@@ -126,10 +125,11 @@ def create_app():
         def calculate():
                 # Submit data to database
                 if request.method == 'POST':
-                        #print(request.form)
-                        risk = get_risk(request.form)["risk"]
-                        res = database.insert_record(request.form, risk)
-                        #/print(res)
+                        data = dict(request.form)
+                        risk = get_risk(data)["risk"]
+                        data["risk"] = risk
+
+                        res = database.insert_record(data)
                         return jsonify(res)
 
                 # Just calculate
