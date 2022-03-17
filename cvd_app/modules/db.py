@@ -25,11 +25,13 @@ class Database:
 
         cursor = self.mysql.connection.cursor(MySQLdb.cursors.DictCursor)
 
-        sql = """INSERT INTO records (nhs_id, birth_date, sex, systolic, cholesterol, hdl, first_name, second_name, chd_risk) 
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"""
+        sql = """INSERT INTO records (nhs_id, birth_date, age, smoker, sex, systolic, cholesterol, hdl, first_name, second_name, chd_risk) 
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"""
         val = (
             data["nhs_id"],
             data["birth_date"],
+            data["age"],
+            bool(data["smoker"]),
             data["sex"],
             data["systolic"],
             data["cholesterol"],

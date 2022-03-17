@@ -206,5 +206,15 @@ def create_app():
                         return render_template('records.html', records=res, authenticated=is_authenticated(session))
                 else:
                         return redirect(url_for('login'))
+        
+
+        @app.route('/stats')
+        def stats():
+                if is_authenticated(session):
+                        res:dict = database.show_records()
+                        return render_template('stats.html', authenticated=is_authenticated(session))
+                else:
+                        return redirect(url_for('login'))
+
 
         return app

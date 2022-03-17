@@ -1,5 +1,5 @@
--- CREATE DATABASE CVDCalculator;
--- USE CVDCalculator;
+CREATE DATABASE CVDCalculator;
+USE CVDCalculator;
 CREATE TABLE accounts (
     id int NOT NULL AUTO_INCREMENT,
     first_name varchar(255) NOT NULL,
@@ -14,6 +14,8 @@ CREATE TABLE records (
     nhs_id int(10) NOT NULL,
 	first_name varchar(255) NOT NULL,
 	second_name varchar(255) NOT NULL,
+	smoker BOOLEAN,
+	age int(3),
 	birth_date DATE,
     sex varchar(255),
 	systolic varchar(255),
@@ -23,18 +25,14 @@ CREATE TABLE records (
 	PRIMARY KEY (id)
 );
 
-# Add in random data
-
 INSERT INTO accounts (first_name, second_name, email, role, password)
-VALUES ("Sev", "Hayrapet", "sev@an.com", "admin", "$2b$12$gpRwkPTXziQTCQzJLJiOcuJ0ONGAYCnrW2lxzQOvHLeVJt68gj7zO"); #
+VALUES ("Sev", "Hayrapet", "sev@an.com", "admin", "$2b$12$gpRwkPTXziQTCQzJLJiOcuJ0ONGAYCnrW2lxzQOvHLeVJt68gj7zO");
 INSERT INTO accounts (first_name, second_name, email, role, password)
 VALUES ("Terry", "Davis", "terry@gmail.com", "gp", "$2b$12$EhU9ol5oInHWNPfPV8WTbeCYFzYhGKdxa7z2nvs3DTbfU73lypj.C"); 
 
-INSERT INTO records (nhs_id, first_name, second_name, birth_date, sex, systolic, cholesterol, hdl, chd_risk)
-VALUES (69, "Jeffrey", "Bozo", "1900-01-25", "male", 100, 100, 100, 25); 
+INSERT INTO records (nhs_id, first_name, second_name, smoker, age, birth_date, sex, systolic, cholesterol, hdl, chd_risk)
+VALUES (69, "Jeffrey", "Bozo", True, 45, "1982-01-25", "male", 100, 100, 100, 25); 
 
-# Create web app mysql user
-
--- CREATE USER 'cvd_account'@'localhost' IDENTIFIED BY 'james_charles00';
--- GRANT ALL PRIVILEGES ON CVDCalculator . * TO 'cvd_account'@'localhost';
--- FLUSH PRIVILEGES;
+CREATE USER 'cvd_account'@'localhost' IDENTIFIED BY 'james_charles00';
+GRANT ALL PRIVILEGES ON CVDCalculator . * TO 'cvd_account'@'localhost';
+FLUSH PRIVILEGES;
