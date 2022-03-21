@@ -12,8 +12,15 @@ from flask import (
 
 
 def create_app():
+        """
+        All API responses must be in this format:
+        {
+                "status" : "success | error",
+                "message" : data
+        }
+        """
         app = Flask(__name__, template_folder='templates')
-        from cvd_app.modules import risk, db
+        from cvd_app.modules import db, faringdon_risk #,risk
 
         bcrypt = Bcrypt(app)
         database = db.Database(app)
@@ -25,19 +32,18 @@ def create_app():
         # Return risk as %
         # Move this to another file??
         def get_risk(data:dict):
-                try:
-                        return risk.Calculate(
+                try: 
+                        return faringdon_risk.Calculate(
                                 sex = data["sex"],
                                 age = data["age"],
-                                smoker = data["smoker"],
-                                systolic = data["systolic"],
                                 cholesterol = data["cholesterol"],
-                                hdl = data["hdl"]
+                                hdl = data["hdl"],
+                                systolic = data["systolic"],
+                                smoker = data["smoker"],
+                                treatment = data["treatment"]                               
                         ).calculate_risk()
-
                 except Exception as response:
-                        return jsonify(str(response))
-                        # abort(400, "wrong input")     
+                        return {"status" : "error", "message" : "ensure all fields are valid"}
 
         # Check if authentication is true in session
         def is_authenticated(session):
@@ -126,24 +132,25 @@ def create_app():
         def calculate():
                 # Submit data to database
                 if request.method == 'POST':
-                        #print(request.form)
-                        risk = get_risk(request.form)["risk"]
-                        res = database.insert_record(request.form, risk)
-                        #/print(res)
-                        return jsonify(res)
+                        risk = get_risk(request.form)
+                        print(request.form)
+                        # Only insert if all these fields are present
+                        if not request.form["nhs_id"] == "":
+                                db_result = database.insert_record(request.form, risk["message"]["risk"])
+                                risk["message"]["result"] = db_result["status"]
+                        else:
+                                risk["message"]["result"] = "No data saved"
+                        return risk
 
                 # Just calculate
                 elif request.method == 'GET':
-
                         # if checkem fails, return the output
-                        print("test")
-                        kek = checkem(request.args)
-                        print(kek)
-                        if "ERROR" in kek:
-                            return kek
-
-                        risk = get_risk(request.args)
-                        return jsonify(risk)
+                        # print("test")
+                        # kek = checkem(request.args)
+                        # print(kek)
+                        # if "ERROR" in kek:
+                        #     return kek
+                        return get_risk(request.args)
 
 
         @app.route('/ping', methods=['GET'])
@@ -162,8 +169,6 @@ def create_app():
                         # Create variables for easy access
                         email = request.form['email']
                         password_raw = request.form['password']
-                        # hashing
-                        # password_hash = bcrypt.generate_password_hash(password_raw)
 
                         account = database.check_account(email) # account as dict
 
@@ -171,7 +176,7 @@ def create_app():
                                 # Create session data, we can access this data in other routes
                                 session['loggedin'] = True
                                 session['email'] = account['email']
-                                # Redirect to home page
+                                # Redirect to logged in profile
                                 return redirect(url_for('profile'))
                         else:
                                 # Account doesnt exist or username/password incorrect

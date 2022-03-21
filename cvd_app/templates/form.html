@@ -1,24 +1,89 @@
-<form id="form">
+<form id="form"> 
 	<!-- Sex -->
 	<fieldset class="row mb-3">
-		<legend class="col-form-label col-sm-2 pt-0">Sex</legend>
+		<legend class="col-form-label col-sm-2 pt-0">Sex (male / female)</legend>
 		<div class="col-sm-10">
-			<div class="form-check">
-				<input class="form-check-input" type="radio" name="sex" id="sex1" value="male">
-				<label class="form-check-label" for="sex1">Male</label>
-			</div>
-			<div class="form-check">
-				<input class="form-check-input" type="radio" name="sex" id="sex2" value="female">
-				<label class="form-check-label" for="sex2">Female</label>
-			</div>
+			<select class="form-select form-select-sm" aria-label=".form-select-sm example" name="sex" required>
+				<option selected disabled value>Select option</option>
+				<option value="0">Male</option>
+				<option value="1">Female</option>
+			</select>
 		</div>
 	</fieldset>
 
 	<!-- Age -->
 	<div class="row mb-3">
-		<label class="col-sm-2 col-form-label">Age (years, int)</label>
+		<label class="col-sm-2 col-form-label">Age (35 - 79)</label>
 		<div class="col-sm-10">
-			<input class="form-control" name="age">
+			<select class="form-select form-select-sm" aria-label=".form-select-sm example" name="age" required>
+				<option selected disabled value>Select option</option>
+				<option value="0">20-34</option>
+				<option value="1">35-39</option>
+				<option value="2">40-44</option>
+				<option value="3">45-49</option>
+				<option value="4">50-54</option>
+				<option value="5">55-59</option>
+				<option value="6">60-64</option>
+				<option value="7">65-69</option>
+				<option value="8">70-74</option>
+				<option value="9">75-79</option>
+			</select>
+		</div>
+	</div>
+
+	<!-- Total Cholesterol -->
+	<div class="row mb-3">
+		<label class="col-sm-2 col-form-label">Total Cholesterol</label>
+		<div class="col-sm-10 ">
+			<div class="input-group">
+				<select class="form-select form-select-sm" aria-label=".form-select-sm example" name="cholesterol"
+					id="select-chol" required>
+					<option selected disabled value>Select option</option>
+					<option value="0">&lt;160</option>
+					<option value="1">160-199</option>
+					<option value="2">200-239</option>
+					<option value="3">240-279</option>
+					<option value="4">&gt;=280</option>
+				</select>
+				<label class="input-group-text" for="select-chol">mg/dL</label>
+			</div>
+		</div>
+	</div>
+
+	<!-- HDL Cholesterol -->
+	<div class="row mb-3">
+		<label class="col-sm-2 col-form-label">HDL Cholesterol (mg/dL, int)</label>
+		<div class="col-sm-10">
+			<div class="input-group">
+				<select class="form-select form-select-sm" aria-label=".form-select-sm example" name="hdl"
+					id="select-chol" required>
+					<option selected disabled value>Select option</option>
+					<option value="-1">&gt;=60</option>
+					<option value="0">50-59</option>
+					<option value="1">40-49</option>
+					<option value="2">&lt;40</option>
+				</select>
+				<label class="input-group-text" for="select-chol">mg/dL</label>
+			</div>
+		</div>
+	</div>
+
+	<!-- Systolic -->
+	<div class="row mb-3">
+		<label class="col-sm-2 col-form-label">Systolic (mmHg, int)</label>
+		<div class="col-sm-10">
+			<div class="input-group">
+				<select class="form-select form-select-sm" aria-label=".form-select-sm example" name="systolic"
+					id="select-chol" required>
+					<option selected disabled value>Select option</option>
+					<option value="0">&lt;120</option>
+					<option value="1">120-129</option>
+					<option value="2">130-139</option>
+					<option value="3">140-159</option>
+					<option value="4">&gt;=160</option>
+				</select>
+				<label class="input-group-text" for="select-chol">mmHg</label>
+			</div>
 		</div>
 	</div>
 
@@ -26,42 +91,27 @@
 	<fieldset class="row mb-3">
 		<legend class="col-form-label col-sm-2 pt-0">Smok?</legend>
 		<div class="col-sm-10">
-			<div class="form-check">
-				<input class="form-check-input" type="radio" name="smoker" id="smok1" value="True">
-				<label class="form-check-label" for="smok1">Oui</label>
-			</div>
-			<div class="form-check">
-				<input class="form-check-input" type="radio" name="smoker" id="smok2" value="False">
-				<label class="form-check-label" for="smok2">Non</label>
-			</div>
+			<select class="form-select form-select-sm" aria-label=".form-select-sm example" name="smoker" required>
+				<option selected disabled value>Select option</option>
+				<option value="1">Yes</option>
+				<option value="0">No</option>
+			</select>
 		</div>
 	</fieldset>
 
-	<!-- Systolic -->
-	<div class="row mb-3">
-		<label class="col-sm-2 col-form-label">Systolic (mmHg, int)</label>
+	<!-- Pressure Treatment -->
+	<fieldset class="row mb-3">
+		<legend class="col-form-label col-sm-2 pt-0">Treated for high blood pressure?</legend>
 		<div class="col-sm-10">
-			<input class="form-control" name="systolic">
+			<select class="form-select form-select-sm" aria-label=".form-select-sm example" name="treatment" required>
+				<option selected disabled value>Select option</option>
+				<option value="1">Yes</option>
+				<option value="0">No</option>
+			</select>
 		</div>
-	</div>
+	</fieldset>
 
-	<!-- Total Cholesterol -->
-	<div class="row mb-3">
-		<label class="col-sm-2 col-form-label">Total Cholesterol (mg/dL, int)</label>
-		<div class="col-sm-10">
-			<input class="form-control" name="cholesterol">
-		</div>
-	</div>
-
-	<!-- Total Cholesterol -->
-	<div class="row mb-3">
-		<label class="col-sm-2 col-form-label">HDL Cholesterol (mg/dL, int)</label>
-		<div class="col-sm-10">
-			<input class="form-control" name="hdl">
-		</div>
-	</div>
-
-	<input type="submit" class="btn btn-primary" value="calculate"/>
+	<input type="submit" class="btn btn-primary" value="calculate">
 
 	<br /><br />
 
@@ -69,12 +119,20 @@
 
 </form>
 
-<p class="fw-bold p-3 mb-2 bg-warning text-dark" id="result"></p>
+<div style="width: 50%">
+	<p class="fw-bold p-3 mb-2 bg-warning text-dark" id="result-box"></p>
+
+	<!-- comparative graph  -->
+	<div class="p-2" id="result-graph">
+		<h3>Comparative results</h3>
+		<canvas id="graph"></canvas>
+	</div>
+</div>
 
 <script>
-$(function(){
-	$('.datepicker').datepicker({
-		format: 'yyyy-mm-dd'
+	$(function () {
+		$('.datepicker').datepicker({
+			format: 'yyyy-mm-dd'
+		});
 	});
-});
 </script>

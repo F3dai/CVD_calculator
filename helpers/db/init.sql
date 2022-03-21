@@ -1,6 +1,6 @@
-CREATE DATABASE CVDCalculator;
+CREATE DATABASE IF NOT EXISTS CVDCalculator;
 USE CVDCalculator;
-CREATE TABLE accounts (
+CREATE TABLE IF NOT EXISTS accounts (
     id int NOT NULL AUTO_INCREMENT,
     first_name varchar(255) NOT NULL,
 	second_name varchar(255) NOT NULL,
@@ -9,13 +9,13 @@ CREATE TABLE accounts (
 	password CHAR(60) BINARY NOT NULL,
 	PRIMARY KEY (id)
 );
-CREATE TABLE records (
+CREATE TABLE IF NOT EXISTS records (
     id int NOT NULL AUTO_INCREMENT,
     nhs_id int(10) NOT NULL,
 	first_name varchar(255) NOT NULL,
 	second_name varchar(255) NOT NULL,
 	smoker BOOLEAN,
-	age int(3),
+	age varchar(10),
 	birth_date DATE,
     sex varchar(255),
 	systolic varchar(255),
