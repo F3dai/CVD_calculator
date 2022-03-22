@@ -1,0 +1,20 @@
+    <div class="row g-3 align-items-center">
+        <div class="col-sm-2 pt-0">
+            <label for="inputmmol" class="col-form-label">mg/dL : </label>
+        </div>
+        <div class="col-auto">
+            <input id="inputmmol" type="number" placeholder="mmo/L" oninput="unitConverter(this.value)"
+                onchange="lengthConverter(this.value)" class="form-control">
+        </div>
+        <div class="col-auto">
+            <span id="outputMgdl" class="form-text">
+                Enter a value.
+            </span>
+        </div>
+    </div>
+
+<script>
+    function unitConverter(valNum) {
+        document.getElementById("outputMgdl").innerHTML = `${valNum * 18} mg/dL`;
+    } 
+</script>
