@@ -2,6 +2,10 @@
 
 Cardiovascular disease risk calculator for university project.
 
+![heart burn lol](https://imgur.com/gXF6Dz6.png)
+
+Check to see if u die soon
+
 ```
 git clone https://github.com/F3dai/CVD_calculator.git
 cd CVD_calculator
@@ -15,11 +19,3 @@ And to stop:
 ```
 docker-compose down
 ```
-
-## To do: 
-
- - Make all sql type/lengths proper
- - Refactor stuff
- - Statistics page
- - Add handling for duplicates (NHS ID?)
- - Untested - what happens when info is submitted for same NHS ID
