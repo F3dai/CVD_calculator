@@ -6,21 +6,26 @@ function resetCanvas() {
 }
 
 // Draw graph
-function graph(result, average) {
-  if (result == ">=30") {
-    result = "30";
+function graph(result1, result2, average) {
+  if (result1 == ">=30") {
+    result1 = "30";
+  } if (result2 == ">=30") {
+    result2 = "30";
+  } if (result1 == "<1") {
+    result1 = "1";
+  } if (result2 == "<1") {
+    result2 = "1";
   }
-  else if (result == "<1") {
-    result = "1";
-  }
+  console.log(result1, result2);
   const cvd_chart = new Chart(document.getElementById('graph'), {
     type: 'bar',
     data: {
-      labels: ['Your Risk', 'Average'],
+      labels: ['Risk v1', 'Risk v2', 'Average'],
       datasets: [{
         label: 'CVD Risk',
-        data: [result, average],
+        data: [result1, result2, average],
         backgroundColor: [
+          'green',
           'green',
           'orange',
         ],
@@ -76,14 +81,14 @@ $(document).ready(function () {
         } else {
           resultBox.html(res.message);
           if (request_type == "GET") {
-            graph(res.message.risk, res.message.average); // draw chart
+            graph(res.message.risk1, res.message.risk2, res.message.average); // draw chart
             resultCanvas.css('display', 'block'); // Unhide chart
-            resultBox.html(`10 year risk: ${res.message.risk}%`);
+            resultBox.html(`10 year risk algorithm 1: ${res.message.risk1}%<br>10 year risk algorithm 2: ${res.message.risk2}%<br>Patient record update: ${res.message.result}`);
           } else if (request_type == "POST") {
             console.log(res);
-            graph(res.message.risk, res.message.average); // draw chart
+            graph(res.message.risk1, res.message.risk2, res.message.average); // draw chart
             resultCanvas.css('display', 'block'); // Unhide chart
-            resultBox.html(`10 year risk: ${res.message.risk}% <br>Patient record update: ${res.message.result}`);
+            resultBox.html(`10 year risk algorithm 1: ${res.message.risk1}%<br>10 year risk algorithm 2: ${res.message.risk2}%<br>Patient record update: ${res.message.result}`);
 
           }
         }

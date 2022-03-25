@@ -20,7 +20,7 @@ def create_app():
         }
         """
         app = Flask(__name__, template_folder='templates')
-        from cvd_app.modules import db, faringdon_risk #,risk
+        from cvd_app.modules import db, faringdon_risk, faringdon_risk_v2#,risk
 
         bcrypt = Bcrypt(app)
         database = db.Database(app)
@@ -32,18 +32,30 @@ def create_app():
         # Return risk as %
         # Move this to another file??
         def get_risk(data:dict):
-                try: 
-                        return faringdon_risk.Calculate(
-                                sex = data["sex"],
-                                age = data["age"],
-                                cholesterol = data["cholesterol"],
-                                hdl = data["hdl"],
-                                systolic = data["systolic"],
-                                smoker = data["smoker"],
-                                treatment = data["treatment"]                               
-                        ).calculate_risk()
-                except Exception as response:
-                        return {"status" : "error", "message" : "ensure all fields are valid"}
+                # try:
+                risk_obj = faringdon_risk.Calculate(
+                        sex = data["sex"],
+                        age = data["age"],
+                        cholesterol = data["cholesterol"],
+                        hdl = data["hdl"],
+                        systolic = data["systolic"],
+                        smoker = data["smoker"],
+                        treatment = data["treatment"]                               
+                )
+                risk1 = risk_obj.calculate_risk()
+                risk2 = faringdon_risk_v2.Calculate(
+                        sex = data["sex"],
+                        age = data["age"],
+                        cholesterol = data["cholesterol"],
+                        hdl = data["hdl"],
+                        systolic = data["systolic"],
+                        smoker = data["smoker"],
+                        treatment = data["treatment"]                               
+                ).calculate_risk()
+                average = risk_obj.get_average()
+                return {"status" : "successful", "message" : {"risk1" : risk1, "risk2": risk2, "average" : average}}
+                # except Exception as response:
+                #         return {"status" : "error", "message" : "ensure all fields are valid"}
 
         # Check if authentication is true in session
         def is_authenticated(session):
@@ -133,10 +145,10 @@ def create_app():
                 # Submit data to database
                 if request.method == 'POST':
                         risk = get_risk(request.form)
-                        print(request.form)
+                        print(risk)
                         # Only insert if all these fields are present
                         if not request.form["nhs_id"] == "":
-                                db_result = database.insert_record(request.form, risk["message"]["risk"])
+                                db_result = database.insert_record(request.form, risk["message"]["risk1"])
                                 risk["message"]["result"] = db_result["status"]
                         else:
                                 risk["message"]["result"] = "No data saved"
