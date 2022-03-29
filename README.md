@@ -19,3 +19,13 @@ And to stop:
 ```
 docker-compose down
 ```
+
+
+
+### testing
+
+```
+pip3 install pytest
+bash helpers/run_tests.sh
+
+```
